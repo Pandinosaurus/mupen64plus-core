@@ -31,6 +31,7 @@
 
 #include "cp0.h"
 #include "cp1.h"
+#include "cp2.h"
 
 #include "recomp_types.h" /* for precomp_instr, regcache_state */
 
@@ -180,7 +181,8 @@ struct r4300_core
     /* FIXME: better put that near linkage_arm code
      * to help generate call beyond the +/-32MB range.
      */
-    ALIGN(4096, char extra_memory[33554432]);
+    ALIGN(4096, unsigned char extra_memory_buffer[NEW_DYNAREC_CACHE_SIZE + NEW_DYNAREC_CACHE_PAGE_PAD]);
+    unsigned char* extra_memory;
     struct new_dynarec_hot_state new_dynarec_hot_state;
 #endif /* NEW_DYNAREC */
 
@@ -189,6 +191,8 @@ struct r4300_core
     struct cp0 cp0;
 
     struct cp1 cp1;
+
+    struct cp2 cp2;
 
     struct memory* mem;
     struct mi_controller* mi;
